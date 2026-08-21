@@ -54,6 +54,18 @@ def calcular_resultado():
             visor.insert(tk.END, resultado)  # insere o resultado no visor
             break
 
+def apagar_numero():
+    
+    if visor.get() == "":
+         return 
+    else:
+        visor.delete(len(visor.get())-1, tk.END)  # apaga o último caractere do visor
+
+def trocar_sinal():
+    expressao=visor.get()
+    converter = float(expressao) *-1
+    visor.delete(0,tk.END)
+    visor.insert(tk.END,converter)
     
 
 botao = tk.Button(janela, text ="7", command=lambda: adicionar_numero("7"))  # o lambda é usado para criar uma função anônima, ou seja, uma função que não tem nome. Ele é usado aqui para passar o parâmetro "7" para a função adicionar_numero quando o botão for clicado.
@@ -104,7 +116,14 @@ botao.grid(row = 3 , column = 3, ipadx= 10)
 botao = tk.Button(janela, text = "-", command=lambda: adicionar_operador("-"))
 botao.grid(row = 4 , column = 3, ipadx= 10)
 
-botao = tk.Button(janela, text = "C", command=lambda: visor.delete(0, tk.END))  # o comando delet apaga o conteúdo do visor, e o parâmetro 0 indica que ele deve apagar desde o início da string até o final (tk.END)
+botao = tk.Button(janela, text = "C", command=lambda: visor.delete(0, tk.END))  # o comando delete apaga o conteúdo do visor, e o parâmetro 0 indica que ele deve apagar desde o início da string até o final (tk.END)
 botao.grid(row = 5 , column = 1, ipadx= 10)
+
+botao = tk.Button(janela, text = "⌫", command=lambda: apagar_numero())
+botao.grid(row = 5 , column = 2, ipadx= 10)
+
+botao = tk.Button(janela, text = "±", command=lambda: trocar_sinal())
+botao.grid(row = 5 , column = 3, ipadx= 10)
+
 
 janela.mainloop()
