@@ -10,7 +10,7 @@ def calcular(num1,num2,operador):
             return num1*num2
         elif operador == '/':
             if num2 == 0:
-                return None
+                raise ValueError('Divisão por zero não é permitida.')
             return num1/num2
 while True:
     print ('Escolha a operação desejada:')
@@ -36,9 +36,10 @@ while True:
         print ('Erro: Por favor, digite um número válido.')
         continue
 
-
-    resultado = calcular(num1,num2,operador)
-    if resultado is None:
-        print ('Erro: Divisão por zero não é permitida.')
-    else:
+    try:
+        resultado = calcular(num1,num2,operador)
         print (f'resultado: {resultado}')
+    except ValueError as erro:
+        print(f'Erro: {erro}')
+    continue
+       
