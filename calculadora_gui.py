@@ -1,24 +1,6 @@
 import tkinter as tk
-
-import tkinter as tk
-
-
-def calcular(num1, num2, operador):
-    if operador == '+':
-        return num1 + num2
-    elif operador == '-':
-        return num1 - num2
-    elif operador == '*':
-        return num1 * num2
-    elif operador == '/':
-        if num2 == 0:
-            return None
-        return num1 / num2
-
-
-
-
-# resto da sua interface...
+import re
+from calculadora import calcular
 
 janela = tk.Tk()
 
@@ -37,22 +19,14 @@ def adicionar_operador(operador):
 
 def calcular_resultado():
     expressao = visor.get()
-    for operador in ['+', '-', '*', '/']:
-        if operador in expressao:
-            num1, num2 = expressao.split(operador)   #.split separa a strig em duas partes usando o parâmetro passado como separador , neste caso o operador
-            num1 = float(num1)
-            num2 = float(num2)
+    padrao = r'^(-?\d+(?:\.\d+)?)([+\-*/])(-?\d+(?:\.\d+)?)$' #utilizado para validar a expressão, ou seja, para verificar se a expressão está no formato correto. O padrão é uma expressão regular que verifica se a expressão tem o formato "número operador número", onde o número pode ser inteiro ou decimal, e o operador pode ser +, -, * ou /. O ^ indica que a expressão deve começar com o padrão, e o $ indica que a expressão deve terminar com o padrão. O -? indica que o número pode ser negativo, e o (?:\.\d+)? indica que o número pode ter uma parte decimal opcional.
+    resultado_regex = re.match(padrao, expressao)               #serve para verificar se a expressão está no formato correto, ou seja, se ela tem o formato "número operador número". Se a expressão estiver no formato correto, o resultado_regex vai conter os grupos correspondentes ao número 1, operador e número 2. Se a expressão não estiver no formato correto, o resultado_regex vai ser None.
 
-            resultado = calcular(num1,num2,operador)
 
-            if resultado is None:
-                visor.delete(0,tk.END)
-                visor.insert(tk.END,"Erro: Divisão por zero não é permitida.")
-                return
+    if not resultado_regex:
+        return
 
-            visor.delete(0, tk.END)  # limpa o visor
-            visor.insert(tk.END, resultado)  # insere o resultado no visor
-            break
+    num1 , operador , num2 = resultado_regex.groups() # serve para extrair os grupos correspondentes ao número 1, operador e número 2 da expressão. O método groups() retorna uma tupla com os grupos correspondentes à expressão regular. No caso, a tupla vai conter o número 1, operador e número 2, que são atribuídos às variáveis num1, operador e num2, respectivamente.
 
 def apagar_numero():
     
